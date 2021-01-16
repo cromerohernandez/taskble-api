@@ -1,0 +1,17 @@
+{
+  "name": "taskble-api",
+  "version": "1.0.0",
+  "description": "task manager api",
+  "main": "app.js",
+  "scripts": {
+    "dev": "nodemon app.js",
+    "start": "node app.js",
+    "test": "npn test"
+  },
+  "author": "Carlos Romero Hernández",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "mongoose": "^5.11.12"
+  }
+}
