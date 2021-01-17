@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt')
+const Task = require('../models/task.model')
 
 const SALT_WORK_FACTOR = 10
 
@@ -49,9 +50,19 @@ function hashPassword (next, user) {
   }
 }
 
+function setCurrentDate (next, task) {
+  if (task.date.isModified('toDo')) {
+    task.date.current = task.date.toDo
+    next()
+  } else {
+    next()
+  }
+}
+
 module.exports = {
   checkPassword,
   checkPasswordFormat,
   generateRandomToken,
-  hashPassword
+  hashPassword,
+  setCurrentDate
 }
