@@ -8,11 +8,16 @@ const taskSchema = new.mongoose.Schema ({
     ref: 'User',
     required: [true, 'user is required'],
   },
+  keyword: {
+    type: String,
+    required: [true, 'keyword is required'],
+    uppercase: true,
+    maxlength: [10, 'keyword can contains 10 chars maximun']
+  },
   title: {
     type: String,
     required: [true, 'title is required'],
     uppercase: true,
-    maxlength: [15, 'title can contains 15 chars maximun']
   },
   description: {
     type: String,
