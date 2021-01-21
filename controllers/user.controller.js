@@ -37,3 +37,23 @@ module.exports.validate = (req, res, next) => {
     })
     .catch(next)
 }
+
+module.exports.update = (req, res, next) => {  
+  User.findOne({ _id: req.currentUser.id })
+    .then(user => {
+      if(user) {
+        ['email', 'password'].forEach(key => {
+          if (req.body[key]) {
+            user[key] = req.body[key]
+          }
+        })
+        return user.save()
+      } else {
+        throw createError(404, 'User not found')
+      }
+    })
+    .then(editedUser => {
+      res.status(200).json(editedUser)
+    })
+    .catch(next)
+}
