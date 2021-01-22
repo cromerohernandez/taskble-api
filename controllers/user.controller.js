@@ -1,5 +1,6 @@
-//const createError = require('http-errors')
+const createError = require('http-errors')
 const mailer = require('../config/mailer.config')
+const Task = require('../models/task.model')
 
 const User = require('../models/user.model')
 
@@ -26,13 +27,25 @@ module.exports.validate = (req, res, next) => {
     .then(user => {
       if(user) {
         user.validated = true
-        user.save()
-          .then(() => {
-            res.status(200).redirect(`${CORS_ORIGIN}/`)
-          })
-          .catch(next)
+        return user.save()
       } else {
-        throw createError(404, 'User not found')
+        throw createError(404, 'user not found')
+      }
+    })
+    .then(validatedUser => {
+      res.status(200).json(validatedUser).redirect(`${CORS_ORIGIN}/`)
+    })
+    .catch(next)
+}
+
+module.exports.profile = (req, res, next) => {
+  User.findOne({ _id: req.currentUser.id })
+    .populate('tasks')
+    .then(user => {
+      if (user) {
+        res.status(200).json(user)
+      } else {
+        throw createError(404, 'user not found')
       }
     })
     .catch(next)
@@ -42,18 +55,40 @@ module.exports.update = (req, res, next) => {
   User.findOne({ _id: req.currentUser.id })
     .then(user => {
       if(user) {
-        ['email', 'password'].forEach(key => {
+        ['password'].forEach(key => {
           if (req.body[key]) {
             user[key] = req.body[key]
           }
         })
         return user.save()
       } else {
-        throw createError(404, 'User not found')
+        throw createError(404, 'user not found')
       }
     })
-    .then(editedUser => {
-      res.status(200).json(editedUser)
+    .then(updatedUser => {
+      res.status(200).json(updatedUser)
     })
+    .catch(next)
+}
+
+module.exports.checkLastAccess = (req, res, next) => {
+  //TODO
+}
+
+module.exports.delete = (req, res ,next) => {
+  Promise
+    .all([
+      User.findByIdAndDelete(req.currentUser.id),
+      Task.deleteMany({ user: req.currentUser.id })
+    ])
+    .then(
+      ([user, tasks]) => {
+        if(user) {
+          res.status(204).json()
+        } else {
+          throw createError(404, 'user not found')
+        }
+      }
+    )
     .catch(next)
 }
