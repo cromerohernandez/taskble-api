@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const { setCurrentDate } = require('../helpers/models.helper')
 
-const taskSchema = new.mongoose.Schema ({
+const taskSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

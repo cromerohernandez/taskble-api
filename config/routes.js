@@ -17,3 +17,5 @@ router.delete('/users/me', authMiddleware.isAuthenticated, usersController.delet
 //sessions
 router.post('/login', authMiddleware.isNotAuthenticated, usersController.login)
 router.post('/logout', authMiddleware.isAuthenticated, usersController.logout)
+
+module.exports = router
