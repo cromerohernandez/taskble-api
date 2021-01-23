@@ -4,7 +4,15 @@ const { checkPassword, checkPasswordFormat, generateRandomToken, hashPassword } 
 
 const EMAIL_PATTERN = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i
 
-const userSchema = new.mongoose.Schema({
+const userSchema = new mongoose.Schema({
+  username: {
+    type: String,
+    required: [true, 'username is required'],
+    unique: true,
+    trim: true,
+    lowercase: true,
+    minlength: [3, 'username needs at least 3 chars']
+  },
   email: {
     type: String,
     required: [true, 'email is required'],
@@ -16,10 +24,10 @@ const userSchema = new.mongoose.Schema({
   },
   password: {
     type: String,
-    required: [
-      [true, 'password is required'],
-      [checkPasswordFormat, 'the password must contains numbers and letters']
-    ],
+    required: /*[*/
+      [true, 'password is required']/*,
+      [checkPasswordFormat, 'password must contains numbers and letters']
+    ]*/,
     minlength: [8, 'the password needs at least 8 chars']
   },
   validationToken: {
