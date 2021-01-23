@@ -7,9 +7,10 @@ const User = require('../models/user.model')
 const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:3000'
 
 module.exports.create = (req, res, next) => {
-  const { email, password } = req.body
+  const { username, email, password } = req.body
 
   const user = new User({
+    username: username,
     email: email,
     password: password
   })
@@ -57,7 +58,7 @@ module.exports.update = (req, res, next) => {
       if (!user) {
         throw createError(404, 'user not found')
       } else {
-        ['password'].forEach(key => {
+        ['username', 'password'].forEach(key => {
           if (req.body[key]) {
             user[key] = req.body[key]
           }
