@@ -3,7 +3,7 @@ const createError = require('http-errors')
 const Task = require('../models/task.model')
 
 module.exports.create = (req, res, next) => {
-  const { keyword, title, description, priority, date,} = req.body
+  const { keyword, title, description, priority, date} = req.body
 
   const task = new Task({
     user: req.currentUser.id,
@@ -19,5 +19,25 @@ module.exports.create = (req, res, next) => {
 
   task.save()
     .then(task => res.status(201).json(task))
+    .catch(next)
+}
+
+module.exports.update = (req, res, next) => {  
+  Task.findOne({ _id: req.params.id })
+    .then(task => {
+      if (!task) {
+        throw createError(404, 'user not found')
+      } else {
+        ['keyword', 'title', 'description', 'priority', 'date.toDo', 'date.limit', 'date.current', 'done'].forEach(key => {
+          if (req.body[key]) {
+            task[key] = req.body[key]
+          }
+        })
+        task.save()
+          .then(updatedTaskr => {
+            res.status(200).json(updatedTaskr)
+          })
+      }
+    })
     .catch(next)
 }
