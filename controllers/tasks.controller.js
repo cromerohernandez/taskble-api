@@ -34,8 +34,8 @@ module.exports.update = (req, res, next) => {
           }
         })
         task.save()
-          .then(updatedTaskr => {
-            res.status(200).json(updatedTaskr)
+          .then(updatedTask => {
+            res.status(200).json(updatedTask)
           })
       }
     })

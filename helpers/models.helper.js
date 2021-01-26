@@ -29,6 +29,11 @@ function checkPasswordFormat (password) {
   return (check.letters & check.numbers) ? true : false
 }
 
+function dateToDays (dateInMilliseconds) {
+  const dayInMilliseconds = 24 * 60 * 60 * 1000
+  return Math.floor(dateInMilliseconds/dayInMilliseconds)
+}
+
 function generateRandomToken () {
   const randomString = () => Math.random().toString(36).substring(2, 13)
   return randomString() + randomString() + randomString() + randomString()
@@ -51,7 +56,7 @@ function hashPassword (next, user) {
 }
 
 function setCurrentDate (next, task) {
-  if (task.date.isModified('toDo')) {
+  if ( (task.date.isModified('toDo')) && (dateToDays(task.date.current) < dateToDays(task.date.toDo)) ) {
     task.date.current = task.date.toDo
     next()
   } else {
