@@ -22,6 +22,29 @@ module.exports.create = (req, res, next) => {
     .catch(next)
 }
 
+module.exports.checkCurrentDate = (req, res, next) => {
+  const lastAccessInDays = dateToDays(req.currentUser.lastAccess)
+  const todayInDays = dateToDays(Date.now())
+
+  if (lastAccessInDays < todayInDays) {
+    Task.updateMany(
+      { _id: req.currentUser.id, 'date.current': { $lt: Date.now() } },
+      { 'date.current': Date.now() },
+      { new: true }
+    )
+      .then(tasks => {
+        if (!tasks) {
+          next()
+        } else {
+          res.status(200, `${tasks.length} current task dates updated`)
+        }
+      })
+      .catch(next)
+  } else {
+    next()
+  }
+}
+
 module.exports.get = (req, res, next) => {
   Task.findOne({ _id: req.params.id })
     .then(task => {
