@@ -4,6 +4,8 @@ const mailer = require('../config/mailer.config')
 const Task = require('../models/task.model')
 const User = require('../models/user.model')
 
+const { dateToDays } = require('../helpers/dates.helper')
+
 const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:3000'
 
 module.exports.create = (req, res, next) => {
@@ -39,6 +41,29 @@ module.exports.validate = (req, res, next) => {
     .catch(next)
 }
 
+module.exports.checkLastAccess = (req, res, next) => {
+  const lastAccessInDays = dateToDays(req.currentUser.lastAccess)
+  const todayInDays = dateToDays(Date.now())
+
+  if (lastAccessInDays < todayInDays) {
+    User.findOne({ _id: req.currentUser.id })
+      .then(user => {
+        if (!user) {
+          throw createError(404, 'user not found')
+        } else {
+          user.lastAccess = Date.now()
+          user.save()
+            .then(updatedUser => {
+              res.status(200).json(updatedUser)
+            })
+        }
+      })
+      .catch(next)
+  } else {
+    next()
+  }
+}
+
 module.exports.profile = (req, res, next) => {
   User.findOne({ _id: req.currentUser.id })
     .populate('tasks')
@@ -70,10 +95,6 @@ module.exports.update = (req, res, next) => {
       }
     })
     .catch(next)
-}
-
-module.exports.checkLastAccess = (req, res, next) => {
-  //TODO
 }
 
 module.exports.delete = (req, res ,next) => {

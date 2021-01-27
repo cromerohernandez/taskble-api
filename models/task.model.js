@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const { setCurrentDate } = require('../helpers/models.helper')
+const { setCurrentDateToToDoDate } = require('../helpers/models.helper')
 
 const taskSchema = new mongoose.Schema({
   user: {
@@ -30,14 +30,15 @@ const taskSchema = new mongoose.Schema({
   date: {
     toDo: {
       type: Date,
-      required: [true, 'toDoDate is required'],
+      required: [true, 'toDoDate is required']
     },
     limit: {
       type: Date,
-      required: [true, 'limitDate is required'],
+      required: [true, 'limitDate is required']
     },
     current: {
-      type: Date
+      type: Date,
+      required: [true, 'currentDate is required']
     }
   },
   done: {
@@ -57,7 +58,7 @@ const taskSchema = new mongoose.Schema({
 })
 
 taskSchema.pre('save', function (next) {
-  setCurrentDate(next, this)
+  setCurrentDateToToDoDate(next, this)
 })
 
 const Task = mongoose.model('Task', taskSchema)
