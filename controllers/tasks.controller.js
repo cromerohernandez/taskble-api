@@ -3,14 +3,14 @@ const createError = require('http-errors')
 const Task = require('../models/task.model')
 
 module.exports.create = (req, res, next) => {
-  const { keyword, title, description, priority, date} = req.body
+  const { keyword, title, description, userPriority, date} = req.body
 
   const task = new Task({
     user: req.currentUser.id,
     keyword: keyword,
     title: title,
     description: description,
-    priority: priority,
+    userPriority: userPriority,
     date: {
       toDo: date.toDo,
       limit: date.limit
@@ -63,7 +63,7 @@ module.exports.update = (req, res, next) => {
       if (!task) {
         throw createError(404, 'task not found')
       } else {
-        ['keyword', 'title', 'description', 'priority', 'date.toDo', 'date.limit', 'date.current', 'done'].forEach(key => {
+        ['keyword', 'title', 'description', 'userPriority', 'date.toDo', 'date.limit', 'date.current', 'done'].forEach(key => {
           if (req.body[key]) {
             task[key] = req.body[key]
           }
