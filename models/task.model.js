@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const { setCurrentDateToToDoDate } = require('../helpers/models.helper')
+const { calculateFinalPriority, setCurrentDateToToDoDate } = require('../helpers/models.helper')
 
 const taskSchema = new mongoose.Schema({
   user: {
@@ -22,10 +22,10 @@ const taskSchema = new mongoose.Schema({
   description: {
     type: String,
   },
-  priority: {
+  userPriority: {
     type: Number,
     enum: [ 1, 2, 3, 4, 5 ],
-    required: [true, 'priority is required']
+    required: [true, 'userPriority is required']
   },
   date: {
     toDo: {
@@ -48,6 +48,7 @@ const taskSchema = new mongoose.Schema({
 },
 { timestamps: true,
   toJSON: {
+    virtuals: true,
     transform: (doc, ret) => {
       ret.id = doc._id;
       delete ret._id;
@@ -55,6 +56,10 @@ const taskSchema = new mongoose.Schema({
       return ret;
     }
   }
+})
+
+taskSchema.virtual('finalPriority').get(function() {
+  return calculateFinalPriority(this)
 })
 
 taskSchema.pre('save', function (next) {

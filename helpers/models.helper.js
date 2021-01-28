@@ -4,6 +4,15 @@ const { dateToDays } = require('../helpers/dates.helper')
 
 const SALT_WORK_FACTOR = 10
 
+function calculateFinalPriority (task) {
+  const finalPriority = task.userPriority
+  const daysLate = dateToDays(task.date.current) - dateToDays(task.date.limit)
+  if (daysLate >= 0) {
+    finalPriority += (daysLate / 4)
+  }
+  return finalPriority
+}
+
 function checkPassword (password, user) {
   return bcrypt.compare(password, user.password)
 }
@@ -61,6 +70,7 @@ function setCurrentDateToToDoDate (next, task) {
 }
 
 module.exports = {
+  calculateFinalPriority,
   checkPassword,
   checkPasswordFormat,
   generateRandomToken,
