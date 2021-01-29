@@ -9,7 +9,6 @@ const mongoose = require('mongoose')
 
 require('./config/db.config')
 
-//const passportConfig = require('./config/passport.config')                          => ???
 const session = require('./config/session.config')
 
 /** 
@@ -22,8 +21,6 @@ app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(session)
-//app.use(passportConfig)                                                             => ???
-
 
 app.use((req, _, next) => {
   req.currentUser = req.session.user
@@ -41,7 +38,7 @@ app.use(function (req, res, next) {
   next(createError(404));
 });
 
-// error handler                                                                     => ???
+// error handler
 app.use(function (error, req, res, next) {
   console.error('-' * 1000)
   console.error(error);
