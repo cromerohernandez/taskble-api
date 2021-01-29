@@ -28,7 +28,7 @@ module.exports.checkCurrentDate = (req, res, next) => {
 
   if (lastAccessInDays < todayInDays) {
     Task.updateMany(
-      { _id: req.currentUser.id, 'date.current': { $lt: Date.now() } },
+      { user: req.currentUser.id, 'date.current': { $lt: Date.now() } },
       { 'date.current': Date.now() },
       { new: true }
     )
@@ -50,6 +50,8 @@ module.exports.get = (req, res, next) => {
     .then(task => {
       if (!task) {
         throw createError(404, 'task not found')
+      } else if (task.user !== req.currentUser.id) {
+        throw createError(403, 'unauthorized user')
       } else {
         res.status(200).json(task)
       }
@@ -62,6 +64,8 @@ module.exports.update = (req, res, next) => {
     .then(task => {
       if (!task) {
         throw createError(404, 'task not found')
+      } else if (task.user !== req.currentUser.id) {
+        throw createError(403, 'unauthorized user')
       } else {
         ['keyword', 'title', 'description', 'userPriority', 'date.toDo', 'date.limit', 'date.current', 'done'].forEach(key => {
           if (req.body[key]) {
@@ -82,6 +86,8 @@ module.exports.delete = (req, res ,next) => {
     .then(task => {
       if (!task) {
         throw createError(404, 'task not found')
+      } else if (task.user !== req.currentUser.id) {
+        throw createError(403, 'unauthorized user')
       } else {
         res.status(204).json()
       }
