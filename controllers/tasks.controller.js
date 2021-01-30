@@ -52,7 +52,7 @@ module.exports.get = (req, res, next) => {
     .then(task => {
       if (!task) {
         throw createError(404, 'task not found')
-      } else if (task.user !== req.currentUser.id) {
+      } else if (task.user != req.currentUser.id) {
         throw createError(403, 'unauthorized user')
       } else {
         res.status(200).json(task)
@@ -66,10 +66,10 @@ module.exports.update = (req, res, next) => {
     .then(task => {
       if (!task) {
         throw createError(404, 'task not found')
-      } else if (task.user !== req.currentUser.id) {
+      } else if (task.user != req.currentUser.id) {
         throw createError(403, 'unauthorized user')
       } else {
-        ['keyword', 'title', 'description', 'userPriority', 'date.toDo', 'date.limit', 'date.current', 'done'].forEach(key => {
+        ['keyword', 'title', 'description', 'userPriority', 'date', 'done'].forEach(key => {
           if (req.body[key]) {
             task[key] = req.body[key]
           }
@@ -88,7 +88,7 @@ module.exports.delete = (req, res ,next) => {
     .then(task => {
       if (!task) {
         throw createError(404, 'task not found')
-      } else if (task.user !== req.currentUser.id) {
+      } else if (task.user != req.currentUser.id) {
         throw createError(403, 'unauthorized user')
       } else {
         res.status(204).json()

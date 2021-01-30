@@ -5,7 +5,7 @@ const { dateToDays } = require('../helpers/dates.helper')
 const SALT_WORK_FACTOR = 10
 
 function calculateFinalPriority (task) {
-  const finalPriority = task.userPriority
+  var finalPriority = task.userPriority
   const daysLate = dateToDays(task.date.current) - dateToDays(task.date.limit)
   if (daysLate > 0) {
     finalPriority += (daysLate / 4)
