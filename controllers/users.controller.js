@@ -83,7 +83,7 @@ module.exports.update = (req, res, next) => {
       if (!user) {
         throw createError(404, 'user not found')
       } else {
-        ['username', 'password'].forEach(key => {
+        ['username'].forEach(key => {
           if (req.body[key]) {
             user[key] = req.body[key]
           }
@@ -91,6 +91,44 @@ module.exports.update = (req, res, next) => {
         user.save()
           .then(updatedUser => {
             res.status(200).json(updatedUser)
+          })
+      }
+    })
+    .catch(next)
+}
+
+module.exports.requestNewPassword = (req, res, next) => {
+  User.findOne({ _id: req.currentUser.id })
+    .then(user => {
+      if (!user) {
+        throw createError(404, 'user not found')
+      } else {
+        mailer.sendUpdatePasswordEmail(user)
+        res.status(200, 'email sent to update password').json()
+      }
+    })
+    .catch(next)
+}
+
+module.exports.updatePassword = (req, res, next) => {  
+  const { password, newPassword } = req.body
+
+  User.findOne({ validationToken: req.params.token })
+    .then(user => {
+      if (!user) {
+        throw createError(404, 'user not found')
+      } else {
+        return user.checkUserPassword(password)
+          .then(match => {
+            if (!match) {
+              throw createError(400, 'invalid password')
+            } else {
+              user.password = newPassword
+              user.save()
+                .then(updatedUser => {
+                  res.status(200).json(updatedUser)
+                })
+            }
           })
       }
     })
