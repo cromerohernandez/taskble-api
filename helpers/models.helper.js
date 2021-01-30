@@ -18,25 +18,28 @@ function checkPassword (password, user) {
 }
 
 function checkPasswordFormat (password) {
-  const letters = 'abcdefghijklmnñopqrstuvwxyz'
-  const numbers = '0123456789'
-  var check = {
-    letters: false,
-    numbers: false
-  }
-  password = password.toLowerCase()
-  for (i=0; i<password.length; i++) {
-    if (letters.indexOf(password.charAt(i))!=-1) {
-      check.letters = true
-      continue
+  if (password.length > 0) {
+    var check = {
+      uppercase: false,
+      lowercase: false,
+      number: false,
+      symbol: false
     }
-  }
-  for (i=0; i<password.length; i++) {
-    if (numbers.indexOf(password.charAt(i))!=-1) {
-      check.numbers = true
+    for (var i = 0; i<password.length; i++) {
+      if (password.charCodeAt(i) >= 65 && password.charCodeAt(i) <= 90) {
+        check.uppercase = true
+      } else if (password.charCodeAt(i) >= 97 && password.charCodeAt(i) <= 122) {
+        check.lowercase = true
+      } else if (password.charCodeAt(i) >= 48 && password.charCodeAt(i) <= 57) {
+        check.number = true
+      } else {
+        check.symbol = true
+      }
     }
+    return (check.uppercase === true && check.lowercase === true && check.number == true && check.symbol === true) ? true : false
+  } else {
+    return false
   }
-  return (check.letters & check.numbers) ? true : false
 }
 
 function generateRandomToken () {
