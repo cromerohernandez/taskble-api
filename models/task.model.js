@@ -37,8 +37,7 @@ const taskSchema = new mongoose.Schema({
       required: [true, 'limitDate is required']
     },
     current: {
-      type: Date,
-      required: [true, 'currentDate is required']
+      type: Date
     }
   },
   done: {

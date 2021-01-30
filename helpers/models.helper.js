@@ -64,7 +64,7 @@ function hashPassword (next, user) {
 }
 
 function setCurrentDateToToDoDate (next, task) {
-  if ( (task.date.isModified('toDo')) && (dateToDays(task.date.current) < dateToDays(task.date.toDo)) ) {
+  if ( !task.date.current || (task.date.isModified('toDo') && dateToDays(task.date.current) < dateToDays(task.date.toDo)) ) {
     task.date.current = task.date.toDo
     next()
   } else {
