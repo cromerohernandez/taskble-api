@@ -42,7 +42,7 @@ module.exports.validate = (req, res, next) => {
 }
 
 module.exports.checkLastAccess = (req, res, next) => {
-  const lastAccessInDays = dateToDays(req.currentUser.lastAccess)
+  const lastAccessInDays = dateToDays(new Date(req.currentUser.lastAccess).getTime())
   const todayInDays = dateToDays(Date.now())
 
   if (lastAccessInDays < todayInDays) {
@@ -54,7 +54,8 @@ module.exports.checkLastAccess = (req, res, next) => {
           user.lastAccess = Date.now()
           user.save()
             .then(updatedUser => {
-              res.status(200).json(updatedUser)
+              res.status(200, 'last access checked')
+              next()
             })
         }
       })

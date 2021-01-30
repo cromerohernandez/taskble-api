@@ -17,7 +17,7 @@ router.delete('/users/me', authMiddleware.isAuthenticated, usersController.delet
 
 //tasks
 router.post('/tasks/new', authMiddleware.isAuthenticated, tasksController.create)
-router.get('/tasks/:id', authMiddleware.isAuthenticated, tasksController.checkCurrentDate, usersController.checkLastAccess, tasksController.get)
+router.get('/tasks/:id', authMiddleware.isAuthenticated, /*tasksController.checkCurrentDate,*/ usersController.checkLastAccess, tasksController.get)
 router.patch('/tasks/:id', authMiddleware.isAuthenticated, tasksController.update)
 router.delete('/tasks/:id', authMiddleware.isAuthenticated, tasksController.delete)
 
