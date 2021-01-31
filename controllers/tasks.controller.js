@@ -25,12 +25,12 @@ module.exports.create = (req, res, next) => {
 }
 
 module.exports.checkCurrentDate = (req, res, next) => {
-  const lastAccessInDays = dateToDays(req.currentUser.lastAccess)
+  const lastAccessInDays = dateToDays(new Date(req.currentUser.lastAccess).getTime())
   const todayInDays = dateToDays(Date.now())
 
   if (lastAccessInDays < todayInDays) {
     Task.updateMany(
-      { user: req.currentUser.id, 'date.current': { $lt: Date.now() } },
+      { user: req.currentUser.id, 'date.current': { $lt: Date.now() }, done: false },
       { 'date.current': Date.now() },
       { new: true }
     )
@@ -39,6 +39,7 @@ module.exports.checkCurrentDate = (req, res, next) => {
           next()
         } else {
           res.status(200, `${tasks.length} current task dates updated`)
+          next()
         }
       })
       .catch(next)
