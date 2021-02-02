@@ -17,8 +17,9 @@ module.exports.sendValidateUserEmail = (targetUser) => {
     to: targetUser.email,
     subject: 'Welcome to Taskble!',
     html: `
-      <h2>Welcome ${targetUser.username}</h2>
-      <p><a href='${APP_HOST}/users/${targetUser.validationToken}/validate'>Confirm</a> your account and start to manage your tasks with Taskble!</p>
+      <p style="text-align:center"><img id="logo" src="../public/images/taskbleLogo.png"</p>
+      <h2 style="text-align:center">Welcome ${targetUser.username}!</h2>
+      <h4 style="text-align:center"><a href='${APP_HOST}/users/${targetUser.validationToken}/validate' style="text-decoration:none">Confirm</a> your account and start to manage your tasks with <span style="color:moccasin">Taskble</span>!</h4>
     `
   })
   .then(info => console.log(info))
@@ -31,9 +32,10 @@ module.exports.sendUpdatePasswordEmail = (targetUser) => {
     to: targetUser.email,
     subject: 'Taskble password change request',
     html: `
-      <h2>${targetUser.username}, we have received a request to change the password for your account at Taskble.</h2>
-      <p>If it was you, <a href='${CORS_ORIGIN}/newpassword/${targetUser.validationToken}'>continue</a> with the process.</p>
-      <p>If you haven't made the request, someone is trying to change your password. We recommend that you access <a href='${CORS_ORIGIN}/'>Taskble</a> now and proceed to change your password.</p>
+      <p style="text-align:center"><img id="logo" src="../public/images/taskbleLogo.png"</p>
+      <h2 style="text-align:center">${targetUser.username}, we have received a request to change the password for your account at <span style="color:moccasin">Taskble</span></h2>
+      <h4 style="text-align:center">If it was you, <a href='${CORS_ORIGIN}/newpassword/${targetUser.validationToken}' style="text-decoration:none">continue</a> with the process.</h4>
+      <h4 style="text-align:center">If you haven't made the request, someone is trying to change your password. We recommend that you access <a href='${CORS_ORIGIN}/' style="text-decoration:none">Taskble</a> now and proceed to change your password.</h4>
     `
   })
   .then(info => console.log(info))
