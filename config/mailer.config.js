@@ -16,10 +16,15 @@ module.exports.sendValidateUserEmail = (targetUser) => {
     from: `Taskble <${user}>`,
     to: targetUser.email,
     subject: 'Welcome to Taskble!',
+    attachments: [{
+      filename: 'taskbleLogo.png',
+      path: './public/images/taskbleLogo.png',
+      cid: 'taskbleLogo' 
+    }],
     html: `
-      <p style="text-align:center"><img id="logo" src="../public/images/taskbleLogo.png"</p>
+      <p style="text-align:center"><img id="logo" src="cid:taskbleLogo" width="250em"/></p>
       <h2 style="text-align:center">Welcome ${targetUser.username}!</h2>
-      <h4 style="text-align:center"><a href='${APP_HOST}/users/${targetUser.validationToken}/validate' style="text-decoration:none">Confirm</a> your account and start to manage your tasks with Taskble!</h4>
+      <h2 style="text-align:center; color:rgb(80,80,80); font-weight:normal"><a href='${APP_HOST}/users/${targetUser.validationToken}/validate' style="text-decoration:none">Confirm</a> your account and start to manage your tasks with Taskble!</h2>
     `
   })
   .then(info => console.log(info))
@@ -31,11 +36,16 @@ module.exports.sendUpdatePasswordEmail = (targetUser) => {
     from: `Taskble <${user}>`,
     to: targetUser.email,
     subject: 'Taskble password change request',
+    attachments: [{
+      filename: 'taskbleLogo.png',
+      path: './public/images/taskbleLogo.png',
+      cid: 'taskbleLogo' 
+    }],
     html: `
-      <p style="text-align:center"><img id="logo" src="../public/images/taskbleLogo.png"</p>
-      <h2 style="text-align:center">${targetUser.username}, we have received a request to change the password for your account at Taskble</h2>
-      <h4 style="text-align:center">If it was you, <a href='${CORS_ORIGIN}/newpassword/${targetUser.validationToken}' style="text-decoration:none">continue</a> with the process.</h4>
-      <h4 style="text-align:center">If you haven't made the request, someone is trying to change your password. We recommend that you access <a href='${CORS_ORIGIN}/' style="text-decoration:none">Taskble</a> now and proceed to change your password.</h4>
+      <p style="text-align:center"><img id="logo" src="cid:taskbleLogo" width="250em"/></p>
+      <h2 style="text-align:center; font-weight:bold">${targetUser.username}, we have received a request to change the password for your account at taskble.</h2>
+      <h2 style="text-align:center; color:rgb(80,80,80); font-weight:normal">If it was you, <a href='${CORS_ORIGIN}/newpassword/${targetUser.validationToken}' style="text-decoration:none">continue</a> with the process.</h2>
+      <h2 style="text-align:center; color:rgb(80,80,80); font-weight:normal">If you haven't made the request, someone is trying to change your password. We recommend that you access <a href='${CORS_ORIGIN}/' style="text-decoration:none">taskble</a> now and proceed to change your password.</h2>
     `
   })
   .then(info => console.log(info))
