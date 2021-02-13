@@ -9,12 +9,14 @@ const mongoose = require('mongoose')
 
 require('./config/db.config')
 
+const cors = require('./config/cors.config')
 const session = require('./config/session.config')
 
 /** 
  * Configure express
  */
 const app = express()
+app.use(cors)
 app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
