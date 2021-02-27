@@ -36,7 +36,7 @@ function checkPasswordFormat (password) {
         check.symbol = true
       }
     }
-    return (check.uppercase === true && check.lowercase === true && check.number == true && check.symbol === true) ? true : false
+    return (check.uppercase === true && check.lowercase === true && check.number === true && check.symbol === true) ? true : false
   } else {
     return false
   }
