@@ -19,13 +19,13 @@ const userSchema = new mongoose.Schema({
     immutable: true,
     trim: true,
     lowercase: true,
-    match: [EMAIL_PATTERN, 'email format is invalid']
+    match: [EMAIL_PATTERN, 'invalid email format']
   },
   password: {
     type: String,
     required: [true, 'password is required'],
     validate: [checkPasswordFormat, 'password must contains uppercase, lowercase, numbers and symbols'],
-    minlength: [8, 'the password needs at least 8 chars']
+    minlength: [8, 'password needs at least 8 chars']
   },
   validationToken: {
     type: String,
