@@ -34,7 +34,7 @@ module.exports.validate = (req, res, next) => {
         user.validated = true
         user.save()
           .then(validatedUser => {
-            res.status(200).json(validatedUser).redirect(`${CORS_ORIGIN}/`)
+            res.status(200).redirect(`${CORS_ORIGIN}/`)
           })
       }
     })
