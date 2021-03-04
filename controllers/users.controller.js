@@ -112,17 +112,17 @@ module.exports.requestNewPassword = (req, res, next) => {
 }
 
 module.exports.updatePassword = (req, res, next) => {  
-  const { password, newPassword } = req.body
+  const { currentPassword, newPassword } = req.body
 
   User.findOne({ validationToken: req.params.token })
     .then(user => {
       if (!user) {
         throw createError(404, 'user not found')
       } else {
-        return user.checkUserPassword(password)
+        return user.checkUserPassword(currentPassword)
           .then(match => {
             if (!match) {
-              throw createError(400, 'invalid password')
+              throw createError(400, 'invalid current password')
             } else {
               user.password = newPassword
               user.save()
