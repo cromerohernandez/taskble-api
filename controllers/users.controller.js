@@ -164,12 +164,12 @@ module.exports.login = (req, res, next) => {
   User.findOne({ email: email, validated: true})
     .then(user => {
       if (!user) {
-        throw createError(404, 'invalid username or password')
+        throw createError(404, 'invalid email or password')
       } else {
         return user.checkUserPassword(password)
           .then(match => {
             if (!match) {
-              throw createError(400, 'invalid username or password')
+              throw createError(400, 'invalid email or password')
             } else {
               req.session.user = user
               res.json(user)
