@@ -117,12 +117,12 @@ module.exports.updatePassword = (req, res, next) => {
   User.findOne({ validationToken: req.params.token })
     .then(user => {
       if (!user) {
-        throw createError(404, 'user not found')
+        throw createError(404, 'invalid current password or request')
       } else {
         return user.checkUserPassword(currentPassword)
           .then(match => {
             if (!match) {
-              throw createError(400, 'invalid current password')
+              throw createError(400, 'invalid current password or request')
             } else {
               user.password = newPassword
               user.save()

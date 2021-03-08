@@ -44,7 +44,7 @@ module.exports.sendUpdatePasswordEmail = (targetUser) => {
     html: `
       <p style="text-align:center"><img id="logo" src="cid:taskbleLogo" width="250em"/></p>
       <h2 style="text-align:center; font-weight:bold">${targetUser.username}, we have received a request to change the password for your account at taskble.</h2>
-      <h2 style="text-align:center; color:rgb(80,80,80); font-weight:normal">If it was you, <a href='${CORS_ORIGIN}/newpassword/${targetUser.validationToken}' style="text-decoration:none">continue</a> with the process.</h2>
+      <h2 style="text-align:center; color:rgb(80,80,80); font-weight:normal">If it was you, <a href='${CORS_ORIGIN}/${targetUser.validationToken}/newpassword' style="text-decoration:none">continue</a> with the process.</h2>
       <h2 style="text-align:center; color:rgb(80,80,80); font-weight:normal">If you haven't made the request, someone is trying to change your password. We recommend that you access <a href='${CORS_ORIGIN}/' style="text-decoration:none">taskble</a> now and proceed to change your password.</h2>
     `
   })
