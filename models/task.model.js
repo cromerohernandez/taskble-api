@@ -12,7 +12,7 @@ const taskSchema = new mongoose.Schema({
     type: String,
     required: [true, 'keyword is required'],
     uppercase: true,
-    maxlength: [10, 'keyword can contains 10 chars maximun']
+    maxlength: [10, 'keyword can contain 10 chars maximun']
   },
   title: {
     type: String,
@@ -24,8 +24,8 @@ const taskSchema = new mongoose.Schema({
   },
   userPriority: {
     type: Number,
-    enum: [ 1, 2, 3, 4, 5 ],
-    required: [true, 'userPriority is required']
+    required: [true, 'priority is required'],
+    enum: [1, 2, 3, 4, 5]
   },
   date: {
     toDo: {
