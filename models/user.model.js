@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, 'password is required'],
-    validate: [checkPasswordFormat, 'password must contains uppercase, lowercase, numbers and symbols'],
+    validate: [checkPasswordFormat, 'password must contain uppercase, lowercase, numbers and symbols'],
     minlength: [8, 'password needs at least 8 chars']
   },
   validationToken: {
