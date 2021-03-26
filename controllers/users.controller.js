@@ -99,7 +99,9 @@ module.exports.update = (req, res, next) => {
 }
 
 module.exports.requestNewPassword = (req, res, next) => {
-  User.findOne({ _id: req.currentUser.id })
+  const userEmail = req.body.email ? req.body.email : req.currentUser.email
+
+  User.findOne({ email: userEmail })
     .then(user => {
       if (!user) {
         throw createError(404, 'user not found')
