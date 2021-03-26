@@ -11,7 +11,7 @@ router.post('/users/new', authMiddleware.isNotAuthenticated, usersController.cre
 router.get('/users/:token/validate', usersController.validate)
 router.get('/users/me', authMiddleware.isAuthenticated, tasksController.checkCurrentDate, usersController.checkLastAccess, usersController.profile)
 router.patch('/users/me', authMiddleware.isAuthenticated, usersController.update)
-router.get('/users/me/requestnewpassword', authMiddleware.isAuthenticated, usersController.requestNewPassword)
+router.post('/users/requestnewpassword', usersController.requestNewPassword)
 router.patch('/users/:token/updatepassword', usersController.updatePassword)
 router.delete('/users/me', authMiddleware.isAuthenticated, usersController.delete)
 
