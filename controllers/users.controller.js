@@ -9,12 +9,13 @@ const { dateToDays } = require('../helpers/dates.helper')
 const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:3000'
 
 module.exports.create = (req, res, next) => {
-  const { username, email, password } = req.body
+  const { username, email, password, language } = req.body
 
   const user = new User({
     username: username,
     email: email,
-    password: password
+    password: password,
+    language: language
   })
 
   user.save()
