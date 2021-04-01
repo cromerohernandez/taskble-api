@@ -27,6 +27,11 @@ const userSchema = new mongoose.Schema({
     validate: [checkPasswordFormat, 'password must contain uppercase, lowercase, numbers and symbols'],
     minlength: [8, 'password needs at least 8 chars']
   },
+  language: {
+    type: String,
+    required: [true, 'language is required'],
+    enum: ['en', 'es']
+  },
   validationToken: {
     type: String,
     default: generateRandomToken
