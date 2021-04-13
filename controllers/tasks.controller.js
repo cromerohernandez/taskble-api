@@ -62,6 +62,21 @@ module.exports.get = (req, res, next) => {
     .catch(next)
 }
 
+module.exports.getDaily = (req, res, next) => {
+  const dayInDays = dateToDays(req.params.day)
+
+  Task.find({ user: req.currentUser.id }, { 'date.current': dayInDays })
+    .sort(finalPriority)
+    .then(tasks => {
+      if (!tasks) {
+        res.status(204, 'no tasks')
+      } else {
+        res.status(200).json(tasks)
+      }
+    })
+    .catch(next)
+}
+
 module.exports.update = (req, res, next) => {  
   Task.findOne({ _id: req.params.id })
     .then(task => {
