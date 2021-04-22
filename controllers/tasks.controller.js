@@ -31,7 +31,7 @@ module.exports.checkCurrentDate = (req, res, next) => {
   if (lastAccessInDays < todayInDays) {
     Task.updateMany(
       { user: req.currentUser.id, 'date.current': { $lt: Date.now() }, done: false },
-      { 'date.current': Date.now() },
+      { 'date.current': new Date(todayInDays * 24 * 60 * 60 * 1000) }, ///////////////////////////////////////////////////////////////////////////////////////¿?¿?¿?
       { new: true }
     )
       .then(tasks => {
@@ -63,10 +63,11 @@ module.exports.get = (req, res, next) => {
 }
 
 module.exports.getDaily = (req, res, next) => {
-  const dayInDays = dateToDays(req.params.day)
+  const dayInDays = dateToDays(req.params.date)
 
-  Task.find({ user: req.currentUser.id }, { 'date.current': dayInDays })
-    .sort(finalPriority)
+  Task.find(/*{ user: req.currentUser.id },*/ { 'date.current': new Date(dayInDays * 24 * 60 * 60 * 1000) }) /////////////////////////////////////////////////////¿?¿?¿?
+    //.populate('finalPriority')
+    //.sort('finalPriority')
     .then(tasks => {
       if (!tasks) {
         res.status(204, 'no tasks')
