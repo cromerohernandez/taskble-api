@@ -57,9 +57,10 @@ const taskSchema = new mongoose.Schema({
   }
 })
 
-taskSchema.virtual('finalPriority').get(function() {
-  return calculateFinalPriority(this)
-})
+taskSchema.virtual('finalPriority')
+  .get(function() {
+    return calculateFinalPriority(this)
+  })
 
 taskSchema.pre('save', function (next) {
   setCurrentDateToToDoDate(next, this)
