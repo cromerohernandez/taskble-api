@@ -98,6 +98,24 @@ module.exports.update = (req, res, next) => {
     .catch(next)
 }
 
+module.exports.done = (req, res, next) => {  
+  Task.findOne({ _id: req.params.id })
+    .then(task => {
+      if (!task) {
+        throw createError(404, 'task not found')
+      } else if (task.user != req.currentUser.id) {
+        throw createError(403, 'unauthorized user')
+      } else {
+        task.done ? task.done = false : task.done = true
+        task.save()
+          .then(updatedTask => {
+            res.status(200).json(updatedTask)
+          })
+      }
+    })
+    .catch(next)
+}
+
 module.exports.delete = (req, res ,next) => {
   Task.findByIdAndDelete(req.params.id)
     .then(task => {
