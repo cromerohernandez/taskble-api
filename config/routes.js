@@ -20,6 +20,7 @@ router.post('/tasks/new', authMiddleware.isAuthenticated, tasksController.create
 router.get('/tasks/daily/:date', authMiddleware.isAuthenticated, tasksController.checkCurrentDate, usersController.checkLastAccess, tasksController.getDaily)
 router.get('/tasks/:id', authMiddleware.isAuthenticated, tasksController.checkCurrentDate, usersController.checkLastAccess, tasksController.get)
 router.patch('/tasks/:id', authMiddleware.isAuthenticated, tasksController.update)
+router.post('/tasks/:id/done', authMiddleware.isAuthenticated, tasksController.done)
 router.delete('/tasks/:id', authMiddleware.isAuthenticated, tasksController.delete)
 
 //sessions
