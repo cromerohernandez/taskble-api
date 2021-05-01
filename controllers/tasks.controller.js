@@ -65,7 +65,7 @@ module.exports.get = (req, res, next) => {
 module.exports.getDaily = (req, res, next) => {
   const dayInDays = dateToDays(req.params.date)
 
-  Task.find(/*{ user: req.currentUser.id },*/ { 'date.current': new Date(dayInDays * 24 * 60 * 60 * 1000) }) /////////////////////////////////////////////////////¿?¿?¿?
+  Task.find({ user: req.currentUser.id, 'date.current': new Date(dayInDays * 24 * 60 * 60 * 1000) }) /////////////////////////////////////////////////////¿?¿?¿?
     .then(tasks => {
       if (!tasks) {
         res.status(204, 'no tasks')
