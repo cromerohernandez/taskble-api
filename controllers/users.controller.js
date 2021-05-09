@@ -85,7 +85,7 @@ module.exports.update = (req, res, next) => {
       if (!user) {
         throw createError(404, 'user not found')
       } else {
-        ['username'].forEach(key => {
+        ['username', 'language'].forEach(key => {
           if (req.body[key]) {
             user[key] = req.body[key]
           }
