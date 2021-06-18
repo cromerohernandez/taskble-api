@@ -3,6 +3,7 @@ const createError = require('http-errors')
 const Task = require('../models/task.model')
 
 const { dateToDays } = require('../helpers/dates.helper')
+const { sortByFinalPriority } = require('../helpers/models.helper')
 
 module.exports.create = (req, res, next) => {
   const { keyword, title, description, userPriority, date} = req.body
@@ -65,12 +66,13 @@ module.exports.get = (req, res, next) => {
 module.exports.getDaily = (req, res, next) => {
   const dayInDays = dateToDays(req.params.date)
 
-  Task.find({ user: req.currentUser.id, 'date.current': new Date(dayInDays * 24 * 60 * 60 * 1000) }) /////////////////////////////////////////////////////¿?¿?¿?
+  Task.find({ user: req.currentUser.id, 'date.current': new Date(dayInDays * 24 * 60 * 60 * 1000) })
     .then(tasks => {
       if (!tasks) {
         res.status(204, 'no tasks')
       } else {
-        res.status(200).json(tasks)
+        const sortedTasks = sortByFinalPriority(tasks)
+        res.status(200).json(sortedTasks)
       }
     })
     .catch(next)
