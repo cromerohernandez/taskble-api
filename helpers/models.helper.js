@@ -72,11 +72,26 @@ function setCurrentDateToToDoDate (next, task) {
   }
 }
 
+function sortByFinalPriority (tasks) {
+  let doneTasks = []
+  let pendingTasks = []
+
+  for (let i = 0; i < tasks.length; i++) {
+    tasks[i].done ? doneTasks.push(tasks[i]) : pendingTasks.push(tasks[i])
+  }
+
+  doneTasks.sort((a, b) => b.finalPriority - a.finalPriority)
+  pendingTasks.sort((a, b) => b.finalPriority - a.finalPriority)
+  
+  return [...pendingTasks, ...doneTasks]
+}
+
 module.exports = {
   calculateFinalPriority,
   checkPassword,
   checkPasswordFormat,
   generateRandomToken,
   hashPassword,
-  setCurrentDateToToDoDate
+  setCurrentDateToToDoDate,
+  sortByFinalPriority
 }
