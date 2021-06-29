@@ -78,6 +78,19 @@ module.exports.getDaily = (req, res, next) => {
     .catch(next)
 }
 
+module.exports.getPending = (req, res, next) => {
+  Task.find({ user: req.currentUser.id, done: false })
+    .then(tasks => {
+      if (!tasks) {
+        res.status(204, 'no tasks')
+      } else {
+        const sortedTasks = sortByFinalPriority(tasks)
+        res.status(200).json(sortedTasks)
+      }
+    })
+    .catch(next)
+}
+
 module.exports.update = (req, res, next) => {  
   Task.findOne({ _id: req.params.id })
     .then(task => {
