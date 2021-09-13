@@ -4,7 +4,7 @@ const { dateToDays } = require('../helpers/dates.helper')
 
 const SALT_WORK_FACTOR = 10
 
-function calculateFinalPriority (task) {
+function calculateFinalPriority(task) {
   var finalPriority = task.userPriority
   const daysLate = dateToDays(task.date.current) - dateToDays(task.date.limit)
   if (daysLate > 0) {
@@ -13,11 +13,11 @@ function calculateFinalPriority (task) {
   return finalPriority
 }
 
-function checkPassword (password, user) {
+function checkPassword(password, user) {
   return bcrypt.compare(password, user.password)
 }
 
-function checkPasswordFormat (password) {
+function checkPasswordFormat(password) {
   if (password.length > 0) {
     var check = {
       uppercase: false,
@@ -42,12 +42,12 @@ function checkPasswordFormat (password) {
   }
 }
 
-function generateRandomToken () {
+function generateRandomToken() {
   const randomString = () => Math.random().toString(36).substring(2, 13)
   return randomString() + randomString() + randomString() + randomString()
 }
 
-function hashPassword (next, user) {
+function hashPassword(next, user) {
   if (user.isModified('password')) {
     bcrypt.genSalt(SALT_WORK_FACTOR)
       .then(salt => {
@@ -63,7 +63,7 @@ function hashPassword (next, user) {
   }
 }
 
-function setCurrentDateToToDoDate (next, task) {
+function setCurrentDateToToDoDate(next, task) {
   if ( !task.date.current || (task.date.isModified('toDo') && dateToDays(task.date.current) < dateToDays(task.date.toDo)) ) {
     task.date.current = task.date.toDo
     next()
@@ -72,7 +72,7 @@ function setCurrentDateToToDoDate (next, task) {
   }
 }
 
-function sortByFinalPriority (tasks) {
+function sortByFinalPriority(tasks) {
   let doneTasks = []
   let pendingTasks = []
 
